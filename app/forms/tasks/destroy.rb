@@ -1,4 +1,4 @@
-class Tasks::Destroy < ActiveType::Object[Task]
+class Tasks::Destroy < ActiveType::Record[Task]
   attribute :current_user
 
   before_destroy :ensure_task_can_be_deleted, prepend: true do

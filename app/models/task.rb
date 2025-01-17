@@ -22,4 +22,6 @@ class Task < ApplicationRecord
   belongs_to :category
 
   validates :title, :scheduled_for, presence: true
+
+  scope :active, -> { where("scheduled_for > ?", Time.now) }
 end

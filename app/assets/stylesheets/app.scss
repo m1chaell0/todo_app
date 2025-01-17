@@ -1,0 +1,167 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+
+/* application.scss (or app.scss) */
+
+/* Variables */
+$primary-color: #0D6EFD;
+$secondary-color: #6C757D;
+$light-bg: #f9f9f9;
+$border-color: #eee;
+
+/* Base */
+html, body {
+    margin: 0; padding: 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background-color: #fafafa;
+    color: #333;
+}
+
+/* Container class for a centered layout */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* Navigation bar */
+nav {
+    background-color: $primary-color;
+    color: #fff;
+    padding: 10px;
+
+    a {
+        color: #fff;
+        text-decoration: none;
+        margin-right: 15px;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+/* Headings */
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+h2 { font-size: 1.4rem; }
+h3 { font-size: 1.2rem; }
+
+/* Links & Buttons */
+a, button, input[type="submit"] {
+    cursor: pointer;
+}
+
+button, .btn {
+    background-color: $primary-color;
+    color: #fff;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 4px;
+    margin-right: 5px;
+    &:hover {
+        background-color: darken($primary-color, 5%);
+    }
+}
+
+.btn-secondary {
+    background-color: $secondary-color;
+    &:hover {
+        background-color: darken($secondary-color, 5%);
+    }
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
+    th, td {
+        border: 1px solid $border-color;
+        padding: 0.75rem;
+        text-align: left;
+    }
+
+    thead {
+        background-color: $light-bg;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f5f5f5;
+    }
+
+    tbody tr:hover {
+        background-color: #ececec;
+    }
+}
+
+/* Forms */
+form {
+    display: inline-block;
+    margin-bottom: 1rem;
+
+    label {
+        font-weight: bold;
+        margin-right: 5px;
+    }
+
+    input[type="text"], select, textarea {
+        padding: 5px;
+        border: 1px solid #ccc;
+        margin-right: 8px;
+        border-radius: 4px;
+    }
+    input[type="checkbox"] {
+        transform: scale(1.1);
+        margin-right: 4px;
+        cursor: pointer;
+    }
+}
+
+/* Icon-based links for show/edit/delete */
+.table-actions {
+    display: flex;
+    gap: 8px;
+
+    a, form {
+        display: inline-block;
+    }
+
+    /* Icon only buttons */
+    .icon-btn {
+        background: none;
+        border: none;
+        color: $primary-color;
+        padding: 0;
+        margin: 0;
+        font-size: 1rem;
+        cursor: pointer;
+        &:hover {
+            color: darken($primary-color, 15%);
+        }
+    }
+
+    /* If you want a slightly bigger icon */
+    i.fa {
+        font-size: 1.1rem;
+        vertical-align: middle;
+    }
+}
+
+/* Utility: .text-right, .text-center, etc. */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
