@@ -42,7 +42,7 @@ gem "thruster", require: false
 # gem "image_processing", "~> 1.2"
 
 gem "active_type"
-gem "devise"
+gem "dartsass-rails"
 gem "pagy"
 
 group :development, :test do
