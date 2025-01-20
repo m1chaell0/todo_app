@@ -45,7 +45,7 @@ class TasksController < ApplicationController
     set_task
     form = ActiveType.cast(@task, Tasks::Destroy)
     form.current_user = current_user
-    if form.destroy(@task)
+    if form.destroy
       redirect_to tasks_path
     else
       @task = form
@@ -71,7 +71,7 @@ class TasksController < ApplicationController
   def apply_sorting
     # Ensure the column is valid to avoid SQL injection.
     # We'll limit to known columns for demonstration:
-    valid_sort_columns = ["title", "scheduled_for", "category", "updated_at"]
+    valid_sort_columns = %w[title scheduled_for category updated_at]
     sort_column = valid_sort_columns.include?(params[:sort]) ? params[:sort] : "scheduled_for"
 
     # direction: asc or desc
