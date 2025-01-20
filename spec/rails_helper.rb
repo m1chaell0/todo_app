@@ -101,3 +101,4 @@ Shoulda::Matchers.configure do |config|
 end
 
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+DatabaseCleaner.url_allowlist = [ "postgres://postgres:postgres@0.0.0.0:5432" ] # whitelist for CI
