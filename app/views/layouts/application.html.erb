@@ -13,9 +13,12 @@
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
+    <!-- Font Awesome CSS (Free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <link rel="icon" href="<%= image_path "favicon.png" %>" type="image/png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
@@ -23,6 +26,20 @@
   </head>
 
   <body>
+
+  <nav>
+    <% if logged_in? %>
+      Logged in as <%= current_user.full_name %> |
+      <%= link_to "Logout", logout_path, data: { turbo_method: :delete } %> |
+      <%= link_to "Show dashboard", tasks_path %> |
+      <%= link_to "Manage categories", categories_path %>
+  <% else %>
+      <%= link_to "Sign Up", signup_path %> |
+      <%= link_to "Login", login_path %>
+    <% end %>
+  </nav>
+  <div class="container">
     <%= yield %>
+  </div>
   </body>
 </html>

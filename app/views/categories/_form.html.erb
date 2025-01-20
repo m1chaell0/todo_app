@@ -1,0 +1,19 @@
+<%= form_with(model: category, local: true) do |f| %>
+  <% if category.errors.any? %>
+    <div style="color: red;">
+      <h2><%= pluralize(category.errors.count, "error") %> prevented saving this category:</h2>
+      <ul>
+        <% category.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </p>
+
+  <%= f.submit %>
+<% end %>
