@@ -6,9 +6,9 @@ on:
     branches: [ main ]
 
 jobs:
+
   scan_ruby:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -53,3 +53,47 @@ jobs:
       - name: Lint code for consistent style
         run: bin/rubocop -f github
 
+  tests:
+    needs: [lint]
+    services:
+      postgres:
+        image: postgres:14
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: todo_app_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries=3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpq-dev
+          gem install bundler
+          bundle install
+
+      - name: Prepare ENV
+        env:
+          DATABASE_URL: "postgres://postgres:postgres@0.0.0.0:5432"
+        run: |
+          bundle exec rails db:create db:test:prepare
+
+      - name: Run tests
+        env:
+          DATABASE_URL: "postgres://postgres:postgres@0.0.0.0:5432"
+        run: bundle exec rspec

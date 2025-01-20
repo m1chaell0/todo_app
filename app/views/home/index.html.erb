@@ -1,0 +1,17 @@
+<div class="home-container">
+  <% if logged_in? %>
+    <h1>Welcome back, <%= current_user.full_name %>!</h1>
+    <p>Manage your tasks and stay organized.</p>
+    <div class="home-buttons">
+      <%= link_to "Go to Tasks", tasks_path, class: "btn btn-primary" %>
+      <%= link_to "Manage Categories", categories_path, class: "btn btn-secondary" %>
+    </div>
+  <% else %>
+    <h1>Welcome to the Todo App</h1>
+    <p>Organize your tasks efficiently. Sign up or log in to get started.</p>
+    <div class="home-buttons">
+      <%= link_to "Sign Up", signup_path, class: "btn btn-primary" %>
+      <%= link_to "Login", login_path, class: "btn btn-secondary" %>
+    </div>
+  <% end %>
+</div>
