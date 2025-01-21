@@ -1,43 +1,45 @@
-<h1>Sign Up</h1>
+<div class="form-container">
+  <h1>Sign Up</h1>
 
-<%= form_with(model: @user, url: users_path) do |f| %>
-  <% if @user.errors.any? %>
-    <div style="color:red;">
-      <h2><%= pluralize(@user.errors.count, "error") %> prevented sign up:</h2>
-      <ul>
-        <% @user.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
+  <%= form_with(model: @user, url: users_path, html: { class: "signup-form" }) do |f| %>
+    <% if @user.errors.any? %>
+      <div class="error-messages">
+        <h2><%= pluralize(@user.errors.count, "error") %> prevented sign up:</h2>
+        <ul>
+          <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label :first_name %>
+      <%= f.text_field :first_name, class: "form-input" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :last_name %>
+      <%= f.text_field :last_name, class: "form-input" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :email_address %>
+      <%= f.email_field :email_address, class: "form-input" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :password %>
+      <%= f.password_field :password, class: "form-input" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :password_confirmation %>
+      <%= f.password_field :password_confirmation, class: "form-input" %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit "Sign Up", class: "form-button" %>
     </div>
   <% end %>
-
-  <p>
-    <%= f.label :first_name %><br>
-    <%= f.text_field :first_name %>
-  </p>
-
-  <p>
-    <%= f.label :last_name %><br>
-    <%= f.text_field :last_name %>
-  </p>
-
-  <p>
-    <%= f.label :email_address %><br>
-    <%= f.email_field :email_address %>
-  </p>
-
-  <p>
-    <%= f.label :password %><br>
-    <%= f.password_field :password %>
-  </p>
-
-  <p>
-    <%= f.label :password_confirmation %><br>
-    <%= f.password_field :password_confirmation %>
-  </p>
-
-  <p>
-    <%= f.submit "Sign Up" %>
-  </p>
-<% end %>
+</div>

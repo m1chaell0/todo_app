@@ -9,19 +9,25 @@
 <% end %>
 
 <!-- Search Form -->
-<%= form_with url: tasks_path(display_expired: params[:display_expired]), method: :get, local: true do %>
-  <label>Search:</label>
-  <%= text_field_tag :q, params[:q] %>
-  <%= submit_tag "Search" %>
-<% end %>
+<div class="tasks-header">
+  <%= form_with url: tasks_path(display_expired: params[:display_expired]), method: :get, local: true, class: "search-form" do %>
+    <label>Search:</label>
+    <%= text_field_tag :q, params[:q], class: "search-input" %>
+    <%= submit_tag "Search", class: "search-button" %>
+  <% end %>
+
+  <%= link_to "New Task", new_task_path, class: "new-task-button" %>
+</div>
 
 <!-- “Active Only” / “Include Expired” form or checkbox -->
-<%= form_with url: tasks_path, method: :get, local: true do %>
-  <label for="display_expired_checkbox">Active Only</label>
-  <%= check_box_tag :display_expired, "1", params[:display_expired] != "1",
-                    id: "active_only_checkbox",
-                    data: { controller: "checkbox-refresh" } %>
-<% end %>
+<div class="checkbox-container">
+  <%= form_with url: tasks_path, method: :get, local: true do %>
+    <label for="display_expired_checkbox">Active Only</label>
+    <%= check_box_tag :display_expired, "1", params[:display_expired] != "1",
+                      id: "active_only_checkbox",
+                      data: { controller: "checkbox-refresh" } %>
+  <% end %>
+</div>
 
 <!-- Sorting & Table -->
 <% if @tasks.any? %>
@@ -73,5 +79,3 @@
 <% else %>
   <p>No tasks found.</p>
 <% end %>
-
-<%= link_to "New Task", new_task_path, class: "btn" %>
