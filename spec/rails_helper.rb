@@ -80,18 +80,8 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
-  end
 
   config.include Helpers
-
-  config.around(:each) do |example|
-    DatabaseCleaner.cleaning do
-      example.run
-    end
-  end
 end
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
@@ -101,4 +91,3 @@ Shoulda::Matchers.configure do |config|
 end
 
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
-DatabaseCleaner.url_allowlist = [ "postgres://postgres:postgres@0.0.0.0:5432" ] # whitelist for CI

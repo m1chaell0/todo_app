@@ -31,7 +31,6 @@ RSpec.describe Tasks::Update, type: :model do
     end
 
     context "when start_time changes while task is in progress" do
-
       before do
         form.start_time = 5.days.ago        # new start time is earlier
         form.end_time = 3.days.from_now     # new end time is in the future

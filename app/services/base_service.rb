@@ -25,8 +25,8 @@ class BaseService
     self.value = value
   end
 
-  def fail!(error_message = '')
-    self.error = error_message.presence || 'action failed'
+  def fail!(error_message = "")
+    self.error = error_message.presence || "action failed"
   end
 
   private
