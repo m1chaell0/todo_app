@@ -1,72 +1,109 @@
 <h1>Tasks</h1>
+<%= render "tasks/search_bar" %>
 
-<!-- Example flash messages (optional) -->
-<% if notice %>
-  <div class="alert alert-notice"><%= notice %></div>
-<% end %>
-<% if alert %>
-  <div class="alert alert-alert"><%= alert %></div>
-<% end %>
-
-<!-- Search Form -->
-<div class="tasks-header">
-  <%= form_with url: tasks_path(display_expired: params[:display_expired]), method: :get, local: true, class: "search-form" do %>
-    <label>Search:</label>
-    <%= text_field_tag :q, params[:q], class: "search-input" %>
-    <%= submit_tag "Search", class: "search-button" %>
-  <% end %>
-
-  <%= link_to "New Task", new_task_path, class: "new-task-button" %>
-</div>
-
-<!-- “Active Only” / “Include Expired” form or checkbox -->
+<!-- “Active Only” / “Show All” checkbox -->
 <div class="checkbox-container">
+  <!-- By default, the box is checked if we're NOT showing all tasks.
+       So if display_expired is *not* present, it's "checked". -->
   <%= form_with url: tasks_path, method: :get, local: true do %>
-    <label for="display_expired_checkbox">Active Only</label>
-    <%= check_box_tag :display_expired, "1", params[:display_expired] != "1",
-                      id: "active_only_checkbox",
+    <%= label_tag :display_expired, "Active Only" %>
+    <%= check_box_tag :display_expired,
+                      "1",
+                      params[:display_expired] != "1", # => if param is not 1 => checked
+                      id: "display_expired_checkbox",
                       data: { controller: "checkbox-refresh" } %>
   <% end %>
 </div>
 
-<!-- Sorting & Table -->
+<!-- Tasks Table -->
 <% if @tasks.any? %>
   <table>
     <thead>
     <tr>
-      <th><%= link_to "Title", tasks_path(sort: "title", direction: switch_direction(params[:direction]),
-                                          q: params[:q], display_expired: params[:display_expired]) %></th>
-      <th><%= link_to "Scheduled For", tasks_path(sort: "scheduled_for", direction: switch_direction(params[:direction]),
-                                                  q: params[:q], display_expired: params[:display_expired]) %></th>
-      <th><%= link_to "Category", tasks_path(sort: "category", direction: switch_direction(params[:direction]),
-                                             q: params[:q], display_expired: params[:display_expired]) %></th>
-      <th><%= link_to "Modified At", tasks_path(sort: "updated_at", direction: switch_direction(params[:direction]),
-                                                q: params[:q], display_expired: params[:display_expired]) %></th>
-      <th colspan="3" class="text-center">Actions</th>
+      <!-- Sorting Links -->
+      <th>
+        <%= link_to "Title", tasks_path(sort: "title",
+                                        direction: switch_direction(params[:direction]),
+                                        q: params[:q],
+                                        display_expired: params[:display_expired]) %>
+      </th>
+      <th>
+        <%= link_to "Start Time", tasks_path(sort: "start_time",
+                                             direction: switch_direction(params[:direction]),
+                                             q: params[:q],
+                                             display_expired: params[:display_expired]) %>
+      </th>
+      <th>End Time</th>
+      <th>Completed?</th>
+      <th>
+        <%= link_to "Category", tasks_path(sort: "category",
+                                           direction: switch_direction(params[:direction]),
+                                           q: params[:q],
+                                           display_expired: params[:display_expired]) %>
+      </th>
+      <th>
+        <%= link_to "Modified At", tasks_path(sort: "updated_at",
+                                              direction: switch_direction(params[:direction]),
+                                              q: params[:q],
+                                              display_expired: params[:display_expired]) %>
+      </th>
+      <th colspan="4" class="text-center">Actions</th>
     </tr>
     </thead>
     <tbody>
     <% @tasks.each do |task| %>
       <tr>
         <td><%= task.title %></td>
-        <td><%= task.scheduled_for.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= task.start_time.strftime("%Y-%m-%d %H:%M") %></td>
+        <td>
+          <% if task.end_time.present? %>
+            <%= task.end_time.strftime("%Y-%m-%d %H:%M") %>
+          <% else %>
+            N/A
+          <% end %>
+        </td>
+        <td>
+          <% if task.completed? %>
+            <i class="fa fa-check" style="color: #28a745;" title="Completed"></i>
+          <% else %>
+            <i class="fa fa-times" style="color: #dc3545;" title="Not Completed"></i>
+          <% end %>
+        </td>
         <td><%= task.category&.name %></td>
         <td><%= task.updated_at.strftime("%Y-%m-%d %H:%M") %></td>
-        <td colspan="3" class="table-actions">
-          <!-- Show -->
+        <!-- Show -->
+        <td>
           <%= link_to task_path(task), class: "icon-btn", title: "Show Task" do %>
             <i class="fa fa-eye"></i>
           <% end %>
-
-          <!-- Edit -->
+        </td>
+        <!-- Edit -->
+        <td>
           <%= link_to edit_task_path(task), class: "icon-btn", title: "Edit Task" do %>
             <i class="fa fa-edit"></i>
           <% end %>
-
-          <!-- Delete -->
+        </td>
+        <!-- Complete (only if not completed yet) -->
+        <td>
+          <% if task.completed_at.blank? %>
+            <%= link_to complete_task_path(task),
+                        data: {
+                          turbo_method: :patch,
+                          turbo_confirm: "Mark this task as completed?"
+                        },
+                        class: "icon-btn", title: "Mark as Completed" do %>
+              <i class="fa fa-check"></i>
+            <% end %>
+          <% else %>
+            <i class="fa fa-check icon-completed" title="Already Completed"></i>
+          <% end %>
+        </td>
+        <!-- Delete -->
+        <td>
           <%= link_to task_path(task),
-                      method: :delete,
-                      data: { confirm: "Are you sure you want to delete this task?" },
+                      data: {
+                        turbo_method: :delete,
+                        turbo_confirm: "Are you sure you want to delete this task?"},
                       class: "icon-btn",
                       title: "Delete Task" do %>
             <i class="fa fa-trash"></i>
