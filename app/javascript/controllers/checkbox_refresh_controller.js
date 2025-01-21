@@ -6,19 +6,18 @@ export default class extends Controller {
   }
 
   refresh() {
-    // If unchecked, we want ?display_expired=1
-    // Otherwise, remove active_only param
+    // If the checkbox is UNchecked => show ALL tasks => set display_expired=1
+    // If the checkbox is CHECKED => show only active tasks => remove display_expired
     let url = new URL(window.location.href)
 
     if (!this.element.checked) {
-      console.log("checked")
+      // Show all tasks
       url.searchParams.set("display_expired", "1")
     } else {
-      console.log("unchecked")
+      // Show active only
       url.searchParams.delete("display_expired")
     }
 
-    // Turbo.visit to that URL
     Turbo.visit(url.toString())
   }
 }

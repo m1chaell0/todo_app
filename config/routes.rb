@@ -3,9 +3,13 @@ Rails.application.routes.draw do
 
   resource :session
   resources :passwords, param: :token
-  resources :tasks
+  resources :tasks do
+    member do
+      patch :complete
+    end
+  end
   resources :categories
-  resources :users
+  resources :users, except: :index
   get "/signup", to: "users#new", as: :signup
   get "/login", to: "sessions#new", as: :login
   delete "/logout", to: "sessions#destroy", as: :logout

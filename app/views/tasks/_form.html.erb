@@ -1,35 +1,45 @@
-<%= form_with(model: task, local: true) do |f| %>
-  <% if task.errors.any? %>
+<div class="form-container">
+  <h1><%= @task.persisted? ? "Edit Task" : "New Task" %></h1>
 
-    <div style="color: red;">
-      <h2><%= pluralize(task.errors.count, "error") %> prevented saving this task:</h2>
+  <% if @task.errors.any? %>
+    <div class="error-messages">
+      <h2><%= pluralize(@task.errors.count, "error") %> prevented saving this task:</h2>
       <ul>
-        <% task.errors.full_messages.each do |msg| %>
+        <% @task.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <p>
-    <%= f.label :title %><br>
-    <%= f.text_field :title %>
-  </p>
+  <%= form_with(model: @task, local: true) do |f| %>
+    <div class="form-group">
+      <%= f.label :title %>
+      <%= f.text_field :title, class: "form-input" %>
+    </div>
 
-  <p>
-    <%= f.label :description %><br>
-    <%= f.text_area :description, rows: 3 %>
-  </p>
+    <div class="form-group">
+      <%= f.label :description %>
+      <%= f.text_area :description, rows: 3, class: "form-input" %>
+    </div>
 
-  <p>
-    <%= f.label :scheduled_for %><br>
-    <%= f.datetime_select :scheduled_for %>
-  </p>
+    <div class="form-group">
+      <%= f.label :start_time %>
+      <%= f.datetime_select :start_time, {}, { class: "datetime-select-group" } %>
+    </div>
 
-  <p>
-    <%= f.label :category_id, "Category" %><br>
-    <%= f.collection_select :category_id, @categories, :id, :name, include_blank: false %>
-  </p>
+    <div class="form-group">
+      <%= f.label :end_time %>
+      <%= f.datetime_select :end_time, include_blank: true,  class: "datetime-select-group" %>
+    </div>
 
-  <%= f.submit %>
-<% end %>
+    <div class="form-group">
+      <%= f.label :category_id, "Category" %>
+      <%= f.collection_select :category_id, @categories, :id, :name, {}, { class: "form-input" } %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit "Save", class: "form-button" %>
+    </div>
+  <% end %>
+</div>

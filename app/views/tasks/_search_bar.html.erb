@@ -1,0 +1,23 @@
+<!-- Search Form -->
+<div class="tasks-header">
+  <!-- Combined Search & Status Filter Form -->
+  <%= form_with url: tasks_path(display_expired: params[:display_expired]), method: :get, local: true, class: "search-form" do %>
+    <!-- Search input -->
+    <label>Search:</label>
+    <%= text_field_tag :q, params[:q], class: "search-input" %>
+
+    <!-- NEW: Status dropdown -->
+    <label for="status">Filter by Status:</label>
+    <select name="status" id="status" class="filter-dropdown">
+      <option value="">All</option>
+      <option value="completed" <%= 'selected' if params[:status] == 'completed' %>>Completed</option>
+      <option value="overdue" <%= 'selected' if params[:status] == 'overdue' %>>Overdue</option>
+      <option value="pending" <%= 'selected' if params[:status] == 'pending' %>>Pending</option>
+      <option value="in_progress" <%= 'selected' if params[:status] == 'in_progress' %>>In Progress</option>
+    </select>
+
+    <%= submit_tag "Search", class: "search-button" %>
+  <% end %>
+
+  <%= link_to "New Task", new_task_path, class: "new-task-button" %>
+</div>

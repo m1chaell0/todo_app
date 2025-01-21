@@ -1,31 +1,57 @@
-<h1>Task Details</h1>
+<div class="form-container">
+  <h1>Task Details</h1>
 
-<p>
-  <strong>Title:</strong>
-  <%= @task.title %>
-</p>
+  <div class="form-group">
+    <label>Title</label>
+    <div class="detail-value">
+      <%= @task.title %>
+    </div>
+  </div>
 
-<p>
-  <strong>Description:</strong>
-  <%= @task.description.presence || "No description" %>
-</p>
+  <div class="form-group">
+    <label>Description</label>
+    <div class="detail-value">
+      <%= @task.description.presence || "No description" %>
+    </div>
+  </div>
 
-<p>
-  <strong>Scheduled For:</strong>
-  <%= @task.scheduled_for.strftime("%Y-%m-%d %H:%M") %>
-</p>
+  <div class="form-group">
+    <label>Start Time</label>
+    <div class="detail-value">
+      <%= @task.start_time.strftime("%Y-%m-%d %H:%M") %>
+    </div>
+  </div>
 
-<p>
-  <strong>Category:</strong>
-  <%= @task.category.name %>
-</p>
+  <div class="form-group">
+    <label>End Time</label>
+    <div class="detail-value">
+      <% if @task.end_time.present? %>
+        <%= @task.end_time.strftime("%Y-%m-%d %H:%M") %>
+      <% else %>
+        <%= "N/A" %>
+      <% end %>
+    </div>
+  </div>
 
-<p>
-  <strong>Created At:</strong>
-  <%= @task.created_at.strftime("%Y-%m-%d %H:%M") %>
-</p>
+  <div class="form-group">
+    <label>Category</label>
+    <div class="detail-value">
+      <%= @task.category&.name || "N/A" %>
+    </div>
+  </div>
 
-<hr>
+  <div class="form-group">
+    <label>Created At</label>
+    <div class="detail-value">
+      <%= @task.created_at.strftime("%Y-%m-%d %H:%M") %>
+    </div>
+  </div>
 
-<%= link_to "Edit", edit_task_path(@task) %> |
-<%= link_to "Back to Tasks", tasks_path %>
+  <hr>
+
+  <div class="form-actions">
+    <%= link_to "Edit", edit_task_path(@task), class: "form-button" %>
+
+    <%= link_to "Back to Tasks", tasks_path, class: "form-button btn-secondary" %>
+  </div>
+</div>
