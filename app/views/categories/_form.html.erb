@@ -1,19 +1,15 @@
-<%= form_with(model: category, local: true) do |f| %>
-  <% if category.errors.any? %>
-    <div style="color: red;">
-      <h2><%= pluralize(category.errors.count, "error") %> prevented saving this category:</h2>
-      <ul>
-        <% category.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
+<div class="form-container">
+  <h1><%= @category.persisted? ? "Edit Category" : "New Category" %></h1>
+  <%= form_with(model: category, local: true) do |f| %>
+    <%= render "shared/errors_form", object: @category, action_message: "saving this category" %>
+
+    <div class="form-group">
+      <%= f.label :name %><br>
+      <%= f.text_field :name %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit "Save", class: "form-button" %>
     </div>
   <% end %>
-
-  <p>
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </p>
-
-  <%= f.submit %>
-<% end %>
+</div>

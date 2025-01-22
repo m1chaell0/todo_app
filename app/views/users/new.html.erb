@@ -2,16 +2,8 @@
   <h1>Sign Up</h1>
 
   <%= form_with(model: @user, url: users_path, html: { class: "signup-form" }) do |f| %>
-    <% if @user.errors.any? %>
-      <div class="error-messages">
-        <h2><%= pluralize(@user.errors.count, "error") %> prevented sign up:</h2>
-        <ul>
-          <% @user.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+
+    <%= render "shared/errors_form", object: @user, action_message: "creating an account" %>
 
     <div class="form-group">
       <%= f.label :first_name %>
