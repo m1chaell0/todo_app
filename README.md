@@ -1,5 +1,20 @@
 # TodoApp
 
+## Table of Contents
+
+1. [Features](#features)
+2. [Technology Stack](#technology-stack)
+3. [Task Scopes](#task-scopes)
+    - [Active](#active)
+    - [Overdue](#overdue)
+    - [In Progress](#in-progress)
+    - [Pending](#pending)
+4. [Installation](#installation)
+5. [Testing](#testing)
+6. [Linting](#linting)
+7. [Future Plans](#future-plans)
+8. [License](#license)
+
 TodoApp is a full-stack web application designed for task management and planning. It demonstrates the implementation of a modern web application with comprehensive backend and frontend functionality.
 
 ## Features
@@ -90,6 +105,14 @@ The app uses RSpec for testing. To run the test suite:
 bundle exec rspec
 ```
 
+## Linting
+
+The app uses Rubocop for linting. To run the check:
+
+```bash
+bundle exec rubocop
+```
+
 ## Future Plans
 
 - **SMS/Email Notifications**: Add reminders and notifications via SMS and/or email.
@@ -102,4 +125,3 @@ This project is open-source and available under the MIT License.
 ---
 
 For any issues or contributions, feel free to create an issue or submit a pull request.
-
