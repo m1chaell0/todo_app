@@ -16,7 +16,7 @@
 
     <div class="form-group">
       <%= f.label :start_time %>
-      <%= f.datetime_select :start_time, {}, { class: "datetime-select-group" } %>
+      <%= f.datetime_select :start_time, start_year: Time.now.year, class: "datetime-select-group" %>
     </div>
 
     <div class="form-group">
