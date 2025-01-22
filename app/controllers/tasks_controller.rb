@@ -1,12 +1,6 @@
 class TasksController < ApplicationController
   def index
-    @tasks = params[:display_expired] ? current_user.tasks : current_user.tasks.active
-
-    apply_filtering
-    apply_search if params[:q]
-    apply_sorting
-
-    @pagy, @tasks = pagy(@tasks, limit: params[:per_page] || 10, page: params[:page])
+    @pagy, @tasks = Tasks::IndexQuery.new(current_user.tasks, params).call
   end
 
   def new
@@ -85,33 +79,5 @@ class TasksController < ApplicationController
 
   def set_task
     @task = current_user.tasks.find(params[:id])
-  end
-
-  def apply_sorting
-    valid_sort_columns = %w[title start_time category updated_at]
-    sort_column = valid_sort_columns.include?(params[:sort]) ? params[:sort] : "start_time"
-    sort_direction = (params[:direction] == "desc") ? "desc" : "asc"
-
-    if params[:sort] == "category"
-      @tasks = @tasks.joins(:category).order("categories.name #{sort_direction}")
-    else
-      @tasks = @tasks.order("#{sort_column} #{sort_direction}")
-    end
-  end
-
-  def apply_search
-    search_term = "%#{params[:q]}%"
-    @tasks = @tasks.joins(:category).where(
-      "tasks.title ILIKE :search
-       OR tasks.description ILIKE :search
-       OR categories.name ILIKE :search",
-      search: search_term
-    )
-  end
-
-  def apply_filtering
-    if params[:status].present?
-      @tasks = @tasks.by_status(params[:status])
-    end
   end
 end

@@ -26,21 +26,23 @@ class Task < ApplicationRecord
   validates :title, :start_time, presence: true
 
   scope :completed, -> { where.not(completed_at: nil) }
-  scope :pending, -> { where(completed_at: nil).where("start_time > ?", Time.current) }
+  scope :pending, -> { where(completed_at: nil, start_time: Time.current..) }
   scope :overdue, -> {
     where(completed_at: nil)
-      .where("(end_time IS NOT NULL AND end_time < ?) OR (end_time IS NULL AND start_time < ?)", Time.current, Time.current)
+      .where(start_time: ..Time.current, end_time: nil)
+      .or(
+        where(end_time: ..Time.current).and(where.not(end_time: nil))
+      )
   }
   scope :in_progress, -> {
     where(completed_at: nil)
-      .where("start_time <= ?", Time.current)
-      .where("end_time >= ?", Time.current)
+      .where(start_time: ...Time.current)
+      .where(end_time: Time.current...)
   }
-
   # 'Active' tasks = not completed + not past end_time (if end_time is set).
   scope :active, -> {
     where(completed_at: nil)
-      .where("end_time IS NULL OR end_time > ?", Time.current)
+    .and(where(end_time: nil).or(where(end_time: Time.current..)))
   }
 
   scope :by_status, ->(status) {
