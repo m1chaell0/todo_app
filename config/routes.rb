@@ -9,7 +9,12 @@ Rails.application.routes.draw do
     end
   end
   resources :categories
-  resources :users, except: :index
+  resources :users, except: [ :index, :show, :destroy ] do
+    member do
+      get :change_password
+      patch :update_password
+    end
+  end
   get "/signup", to: "users#new", as: :signup
   get "/login", to: "sessions#new", as: :login
   delete "/logout", to: "sessions#destroy", as: :logout
