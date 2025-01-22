@@ -1,0 +1,29 @@
+<div class="pagination-bar">
+  <div class="pagination-controls">
+    <%= form_with(url: send("#{object.pluralize}_path"), method: :get, local: true, class: "pagination-form-inline") do |f| %>
+      <label for="per_page">Records per page:</label>
+      <%= select_tag :per_page, options_for_select([5, 10, 20, 50], params[:per_page] || 10),
+                     onchange: "this.form.submit()", class: "pagination-dropdown" %>
+      <% params.except(:per_page, :controller, :action).each do |key, value| %>
+        <%= hidden_field_tag key, value %>
+      <% end %>
+    <% end %>
+
+    <%= form_with(url: send("#{object.pluralize}_path"), method: :get, local: true, class: "pagination-form-inline") do |f| %>
+      <label for="page">Go to page:</label>
+      <%= number_field_tag :page, params[:page], min: 1, max: @pagy.pages,
+                           onchange: "this.form.submit()", class: "pagination-number" %>
+      <% params.except(:page, :controller, :action).each do |key, value| %>
+        <%= hidden_field_tag key, value %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="pagination-controls">
+    <% if @pagy.pages > 1 %>
+      <nav class="pagination-nav">
+        <%== pagy_nav(@pagy) %>
+      </nav>
+    <% end %>
+  </div>
+</div>

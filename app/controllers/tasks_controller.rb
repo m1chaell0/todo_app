@@ -5,6 +5,8 @@ class TasksController < ApplicationController
     apply_filtering
     apply_search if params[:q]
     apply_sorting
+
+    @pagy, @tasks = pagy(@tasks, limit: params[:per_page] || 10, page: params[:page])
   end
 
   def new
