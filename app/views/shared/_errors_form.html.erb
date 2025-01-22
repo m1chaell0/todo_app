@@ -1,0 +1,10 @@
+<% if object.errors.any? %>
+  <div class="error-messages">
+    <h2><%= pluralize(object.errors.count, "error") %> prevented <%= action_message ? action_message : "performing this action" %>:</h2>
+    <ul>
+      <% object.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

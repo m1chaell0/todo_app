@@ -1,16 +1,7 @@
 <div class="form-container">
   <h1><%= @task.persisted? ? "Edit Task" : "New Task" %></h1>
 
-  <% if @task.errors.any? %>
-    <div class="error-messages">
-      <h2><%= pluralize(@task.errors.count, "error") %> prevented saving this task:</h2>
-      <ul>
-        <% @task.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render "shared/errors_form", object: @task, action_message: "saving this task" %>
 
   <%= form_with(model: @task, local: true) do |f| %>
     <div class="form-group">
@@ -30,7 +21,7 @@
 
     <div class="form-group">
       <%= f.label :end_time %>
-      <%= f.datetime_select :end_time, include_blank: true,  class: "datetime-select-group" %>
+      <%= f.datetime_select :end_time, include_blank: true, start_year: Time.now.year, class: "datetime-select-group" %>
     </div>
 
     <div class="form-group">

@@ -15,12 +15,10 @@
   <% end %>
 </div>
 
-<!-- Tasks Table -->
 <% if @tasks.any? %>
   <table>
     <thead>
     <tr>
-      <!-- Sorting Links -->
       <th>
         <%= link_to "Title", tasks_path(sort: "title",
                                         direction: switch_direction(params[:direction]),
@@ -71,19 +69,16 @@
         </td>
         <td><%= task.category&.name %></td>
         <td><%= task.updated_at.strftime("%Y-%m-%d %H:%M") %></td>
-        <!-- Show -->
         <td>
           <%= link_to task_path(task), class: "icon-btn", title: "Show Task" do %>
             <i class="fa fa-eye"></i>
           <% end %>
         </td>
-        <!-- Edit -->
         <td>
           <%= link_to edit_task_path(task), class: "icon-btn", title: "Edit Task" do %>
             <i class="fa fa-edit"></i>
           <% end %>
         </td>
-        <!-- Complete (only if not completed yet) -->
         <td>
           <% if task.completed_at.blank? %>
             <%= link_to complete_task_path(task),
@@ -98,7 +93,6 @@
             <i class="fa fa-check icon-completed" title="Already Completed"></i>
           <% end %>
         </td>
-        <!-- Delete -->
         <td>
           <%= link_to task_path(task),
                       data: {
@@ -113,6 +107,11 @@
     <% end %>
     </tbody>
   </table>
+
+  <div class="pagination">
+    <%= render 'shared/pagination', pagy: @pagy, object: "task" %>
+  </div>
+
 <% else %>
   <p>No tasks found.</p>
 <% end %>
