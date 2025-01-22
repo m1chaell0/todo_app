@@ -15,10 +15,42 @@ class UsersController < ApplicationController
     end
   end
 
+  def edit
+    @user = current_user
+  end
+
+  def update
+    @user = current_user
+    if @user.update(user_params)
+      redirect_to edit_user_path(@user), notice: "Profile updated successfully."
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def change_password
+    @user = current_user
+  end
+
+  def update_password
+    @user = current_user
+    form = ActiveType.cast(@user, Users::ChangePassword)
+    if form.update(update_password_params)
+      redirect_to edit_password_user_path(@user), notice: "Password updated successfully."
+    else
+      @user = form
+      render :change_password, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def user_params
     # Must permit password and password_confirmation as well
     params.require(:user).permit(:first_name, :last_name, :email_address, :password, :password_confirmation)
+  end
+
+  def update_password_params
+    params.require(:user).permit(:current_password, :new_password, :password_confirmation)
   end
 end
